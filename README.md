@@ -1,4 +1,4 @@
-![image](https://github.com/sushantsubedi/FocusBoostVR/assets/60282635/c22d4fa3-ec53-4f7f-8d76-7cd7c1d7fa83)# 🧠 FocusBoostVR
+# 🧠 FocusBoostVR
 ENGR 1001 Computer Programming For Engineers VR Term Project
 
 ![alt text](https://saadsifar.vercel.app/cards/Focus%20Boost.png)
