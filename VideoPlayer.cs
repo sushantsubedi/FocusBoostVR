@@ -1,92 +1,74 @@
 using System.Collections;
-using UnityEngine;
-using UnityEngine.Video;
+using UnityEngine; 
+using UnityEngine.Video; 
 
 public class CustomVideoPlayerController : MonoBehaviour
 {
-    public VideoClip[] videoclips;
-    private VideoPlayer videoplayer;
-    private int videoClipIndex;
+    public VideoClip[] videoclips; // Public array to hold VideoClips
+    private VideoPlayer videoplayer; // Private variable for the VideoPlayer component
+    private int videoClipIndex; // Private variable to keep track of the current video clip index
 
-    private MeshRenderer videoRenderer; // Assuming the video is displayed on a plane with a MeshRenderer
+    private MeshRenderer videoRenderer; // Private variable for the MeshRenderer component since displayed on 3D cube
 
-    private void Awake()
+    private void Awake() // Awake is called when the script instance is being loaded
     {
-        videoplayer = GetComponent<VideoPlayer>();
-        videoRenderer = GetComponent<MeshRenderer>(); // Adjust this line based on your actual setup
+        videoplayer = GetComponent<VideoPlayer>(); // Get the VideoPlayer component attached to the same GameObject
+        videoRenderer = GetComponent<MeshRenderer>(); // Get the MeshRenderer component attached to the same GameObject
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        videoplayer.clip = videoclips[0];
+        videoplayer.clip = videoclips[0]; // Set the initial video clip
 
         // Check if the renderer exists before trying to access its material
         if (videoRenderer != null)
         {
-            videoRenderer.material.mainTextureScale = new Vector2(-1, 1);
-            videoRenderer.material.mainTextureOffset = new Vector2(1, 0); // Flip horizontally
+            videoRenderer.material.mainTextureScale = new Vector2(-1, 1); // Flip the video horizontally
+            videoRenderer.material.mainTextureOffset = new Vector2(1, 0);
         }
         else
         {
-            UnityEngine.Debug.LogWarning("No MeshRenderer found on the GameObject.");
+            UnityEngine.Debug.LogWarning("No MeshRenderer found on the GameObject."); // Log a warning if no MeshRenderer is found
         }
 
-        // Start playing the first video with a delay
+        // Start playing the first video with a delay of 1 second
         StartCoroutine(PlayVideoWithDelay(1f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Play next video clip
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            PlayNext();
-        }
-
-        // Play previous video clip
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            PlayPrevious();
-        }
-
-        // Toggle play/pause
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            TogglePlayPause();
-        }
-
-        // Right controller primary hand trigger for PlayNext()
+        // Right controller primary hand trigger for PlayNext() in Oculus VR
         if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
         {
             PlayNext();
         }
 
-        // Left controller primary hand trigger for PlayPrevious()
+        // Left controller primary hand trigger for PlayPrevious() in Oculus VR
         if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch))
         {
             PlayPrevious();
         }
 
-        // Both controllers primary index triggers for TogglePlayPause()
+        // Both controllers primary index triggers for TogglePlayPause() in Oculus VR
         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) ||
             OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
         {
             TogglePlayPause();
         }
-
-
     }
 
+    // Coroutine to play the video with a delay
     IEnumerator PlayVideoWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
         // Play the current video
-        PlayCurrentVideo();
+         videoplayer.Play();
     }
 
+    // Method to play the next video clip
     public void PlayNext()
     {
         videoClipIndex++;
@@ -100,6 +82,7 @@ public class CustomVideoPlayerController : MonoBehaviour
         StartCoroutine(PlayVideoWithDelay(1f));
     }
 
+    // Method to play the previous video clip
     public void PlayPrevious()
     {
         videoClipIndex--;
@@ -113,6 +96,7 @@ public class CustomVideoPlayerController : MonoBehaviour
         StartCoroutine(PlayVideoWithDelay(1f));
     }
 
+    // Method to toggle play/pause
     public void TogglePlayPause()
     {
         if (videoplayer.isPlaying)
@@ -124,11 +108,3 @@ public class CustomVideoPlayerController : MonoBehaviour
             videoplayer.Play();
         }
     }
-
-    void PlayCurrentVideo()
-    {
-        // Logic to set up and play the current video
-        videoplayer.Play();
-    }
-
-}
