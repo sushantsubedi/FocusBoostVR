@@ -18,7 +18,6 @@ public class MusicManager : MonoBehaviour
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-
         // Start playing the first song when the game starts
         ChangeSong(currentSongIndex);
         isPlaying = true; // assume the music starts playing
@@ -29,9 +28,7 @@ public class MusicManager : MonoBehaviour
     {
         _audioSource.volume = volume;
         if (Input.GetKeyDown(KeyCode.Space))
-            PlayPauseSong();
-
-
+            PlayPauseSong(); // Toggle Song Play/Pause when space clicked
 
         // Check if the song has ended and loop it
         if (!_audioSource.isPlaying && isPlaying)
@@ -41,13 +38,14 @@ public class MusicManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
             NextSong();
 
+        // Check for the left arrow key to go back to previous song
         if (Input.GetKeyDown(KeyCode.LeftArrow))
             PreviousSong();
     }
 
     public void PlayPauseSong()
     {
-        // Toggle play/pause when Space key is pressed
+        // Toggle play/pause based on current vidoe state
         if (isPlaying)
             PauseSong();
         else
@@ -91,7 +89,7 @@ public class MusicManager : MonoBehaviour
     
     public void PreviousSong()
     {
-        // Move to the previos song index
+        // Move to the previous song index
         currentSongIndex--;
 
         // If it reaches the beginning of the array, loop back to the last song
